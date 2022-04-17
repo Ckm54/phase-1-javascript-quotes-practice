@@ -28,11 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
             <p class="mb-0">${item.quote}</p>
             <footer class="blockquote-footer">${item.author}</footer>
             <br>
-            <button class='btn-success'>Likes: <span>${item.likes.length}</span></button>
-            <button class='btn-danger'>Delete</button>
+            <button id="like" class='btn-success'>Likes: <span>${item.likes.length}</span></button>
+            <button id="delete" class='btn-danger'>Delete</button>
             </blockquote>
         `
         li.innerHTML = html
+        li.querySelector("#delete").addEventListener("click", () => {
+            li.remove()
+            deleteQuote(item.id)
+        })
         quoteList.append(li)
     }
 
@@ -47,5 +51,16 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => createQuote(data))
+    }
+
+    function deleteQuote(id) {
+        fetch(`http://localhost:3000/quotes/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
     }
 })
