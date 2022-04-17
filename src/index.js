@@ -36,5 +36,16 @@ document.addEventListener("DOMContentLoaded", () => {
         quoteList.append(li)
     }
 
-    
+    function handleFormSubmit(data) {
+        fetch("http://localhost:3000/quotes?_embed=likes", {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => createQuote(data))
+    }
 })
