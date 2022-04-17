@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
             li.remove()
             deleteQuote(item.id)
         })
+        li.querySelector("#like").addEventListener("click", () => {
+            let span = li.querySelector("span")
+            likeQuote(item.id, span)
+        })
         quoteList.append(li)
     }
 
@@ -62,5 +66,23 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.json())
         .then(data => console.log(data))
+    }
+
+    function likeQuote(itemId, span) {
+        console.log(itemId)
+        fetch(`http://localhost:3000/likes?quoteId=${id}`, {
+            method: 'POST', 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                quoteId: itemId,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            span.innerText = parseInt((data.id)-1)
+        })
     }
 })
